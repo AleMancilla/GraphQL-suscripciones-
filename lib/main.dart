@@ -1,7 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:practica_graphql/Pages/HomePage.dart';
+import 'package:practica_graphql/Provider/DatosProvider.dart';
+import 'package:provider/provider.dart';
  
-void main() => runApp(MyApp());
+void main() {
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => new DatosProvider()),
+      ],
+      child: MyApp(),
+    )
+  
+  );
+}
  
 class MyApp extends StatelessWidget {
   @override

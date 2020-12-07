@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:practica_graphql/Logic/GraphQL.dart';
+import 'package:practica_graphql/Provider/DatosProvider.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -11,21 +13,36 @@ class _HomePageState extends State<HomePage> {
 
   List<Widget> items;
   List lista;
-
+  DatosProvider prov;
   @override
   void didChangeDependencies() async {
+    prov = Provider.of<DatosProvider>(context);
     super.didChangeDependencies();
-    lista = await api.leerDatos();
-    items = lista.map((e) {
-      return CardItem(
-        idMuseo: e["idMuseo"], 
-        name: e["name"]
-      );
-    }).toList();
-    setState(() { });
+    api.suscripsion(context);
+
+    // lista = await api.leerDatos();
+    // items = lista.map((e) {
+    //   return CardItem(
+    //     idMuseo: e["idMuseo"], 
+    //     name: e["name"]
+    //   );
+    // }).toList();
+    // setState(() { });
+    lista = prov.lista;
+    if(lista!=null){
+      items = lista.map((e) {
+        return CardItem(
+          idMuseo: e["idMuseo"], 
+          name: e["name"]
+        );
+      }).toList();
+    }
+      
+    
   }
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       body: Container(
         child: ListView(
